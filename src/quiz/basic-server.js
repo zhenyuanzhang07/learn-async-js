@@ -29,29 +29,28 @@ const incidents = [
 ]
 
 const server = http.createServer((req, res) => {
-    // Parse the request URL to extract parameters
     const parsedUrl = url.parse(req.url, true);
     const { pathname } = parsedUrl;
 
-    // Check if the request is for the specified endpoint
     if (pathname.startsWith('/incidents/')) {
-        // Extract parameters from the URL
         const [, , road, location, direction, id] = pathname.split('/');
 
-        // Check if all parameters are provided
-        if (road && location && direction && id) {
-            // Send response with the extracted parameters
+        if (!road || !location || !direction || !id) {
+            // Return a 400 Bad Request if any parameter is missing
+            res.writeHead(400, { 'Content-Type': 'text/plain' });
+            res.end('Bad Request: Missing parameters');
+        } else {
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(incidents.filter((incident) => {
                 return incident.id === `MABOS00${id}`
             })));
         }
     } else {
-        // If the request is for an unsupported endpoint, send a not found response
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Endpoint not found');
     }
 });
+
 
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
