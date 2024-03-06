@@ -14,12 +14,18 @@ function sumRow(row) {
     });
 }
 
-function sum2DArrayConcurrently(array2D) {
+async function sum2DArrayConcurrently(array2D) {
     const promises = array2D.map(row => sumRow(row));
-    return Promise.all(promises)
-        .then(sums => sums.reduce((a, b) => a + b, 0));
+    const sums = await Promise.all(promises);
+    return sums.reduce((a, b) => a + b, 0);
 }
 
-sum2DArrayConcurrently(array2D)
-    .then(totalSum => console.log("Total Sum:", totalSum))
-    .catch(error => console.error("Error:", error));
+// Using the function with async/await
+(async () => {
+    try {
+        const totalSum = await sum2DArrayConcurrently(array2D);
+        console.log("Total Sum:", totalSum);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+})();

@@ -7,7 +7,7 @@ const aliceTiming = {
   duration: 2000,
   iterations: 1,
   fill: 'forwards'
-}
+};
 
 const alice1 = document.querySelector("#alice1");
 const alice2 = document.querySelector("#alice2");
@@ -15,15 +15,18 @@ const alice3 = document.querySelector("#alice3");
 
 async function animateAlice() {
   try {
+    // Await each animation in turn
     await alice1.animate(aliceTumbling, aliceTiming).finished;
     await alice2.animate(aliceTumbling, aliceTiming).finished;
     await alice3.animate(aliceTumbling, aliceTiming).finished;
   } catch (err) {
+    // Handle any errors that occur during the animation
     alert(`Error during animation: ${err.message}`);
   }
 }
 
 animateAlice();
+
 
 
   // Promise chain  
